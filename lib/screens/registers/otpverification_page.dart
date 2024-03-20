@@ -21,7 +21,6 @@ class _OtpVerificationState extends State<OtpVerification> {
   int? number;
   TextEditingController pinController = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
-
   @override
   void initState() {
     super.initState();
