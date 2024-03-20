@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1018573916466",
+    "project_id": "hotelhub-45953",
+    "storage_bucket": "hotelhub-45953.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018573916466:android:b863b437802b79c57d6f2b",
+        "android_client_info": {
+          "package_name": "com.example.oyoo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCACWyGuxY-Fp3yytnchYqVNk3UwvuPZ9I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
