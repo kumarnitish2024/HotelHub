@@ -130,22 +130,26 @@ class _SignInState extends State<SignIn> {
                 //     Fluttertoast.showToast(msg: "OTP Failed");
                 //   }
                 // },
-                onPressed: ()async{
-                  await FirebaseAuth.instance.verifyPhoneNumber(
-                    phoneNumber: "${}",
-                      verificationCompleted: (phoneAuthCredential) {
+                // onPressed: ()async{
+                //   await FirebaseAuth.instance.verifyPhoneNumber(
+                //     phoneNumber: "${}",
+                //       verificationCompleted: (phoneAuthCredential) {
+                //
+                //   }, verificationFailed: (error) {
+                //
+                //   }, codeSent: (verificationId, forceResendingToken) {
+                //
+                //   }, codeAutoRetrievalTimeout: (verificationId) {
+                //
+                //   },);
+                //   try{}catch(e){
+                //
+                //   }
+                // },
 
-                  }, verificationFailed: (error) {
 
-                  }, codeSent: (verificationId, forceResendingToken) {
 
-                  }, codeAutoRetrievalTimeout: (verificationId) {
 
-                  },);
-                  try{}catch(e){
-
-                  }
-                },
                 child: const Text("Continue"),
               ),
 
