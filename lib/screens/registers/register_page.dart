@@ -1,23 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:lottie/lottie.dart';
-import 'package:oyo/screens/buttonnavigations_view/bottomnavigationbar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../buttonnavigations_view/bottomnavigationbar.dart';
 
 class RegisterPages extends StatefulWidget {
   const RegisterPages({Key? key}) : super(key: key);
-
   @override
   State<RegisterPages> createState() => _RegisterPagesState();
 }
 
 class _RegisterPagesState extends State<RegisterPages> {
-  int?number;
-  Future getMobileNumber()async{
-    var shar= await SharedPreferences.getInstance();
+  int? number;
+  Future<void> getMobileNumber() async {
+    SharedPreferences shar = await SharedPreferences.getInstance();
     setState(() {
-      number=shar.getInt('number');
+      number = shar.getInt('number');
     });
   }
 
@@ -35,42 +35,36 @@ class _RegisterPagesState extends State<RegisterPages> {
   validate() {
     if (_nameController.text.length < 3) {
       Fluttertoast.showToast(msg: "please valid name");
-    } else if(_nameController.text.contains(RegExp(r'[0-9]'))){
+    } else if (_nameController.text.contains(RegExp(r'[0-9]'))) {
       Fluttertoast.showToast(msg: "Number Not allowed Into Name");
-    }else if(!_nameController.text.startsWith(RegExp(r'[A-Z]'))){
+    } else if (!_nameController.text.startsWith(RegExp(r'[A-Z]'))) {
       Fluttertoast.showToast(msg: "Name Must Start With Capital letter");
-    }
-    // else if(!_emailController.text.startsWith(RegExp(r'[a-z]'))){
-    //   Fluttertoast.showToast(msg: "Email Should Start With small letter");
-    // }
-    else if (!_emailController.text.contains("@gmail.com")) {
+    } else if (!_emailController.text.contains("@gmail.com")) {
       Fluttertoast.showToast(msg: "please valid email");
     } else if (_address.text.length <= 3) {
       Fluttertoast.showToast(msg: "please valid address");
-    } else if (_DateBirthdayController.text.length <= 3){
+    } else if (_DateBirthdayController.text.length <= 3) {
       Fluttertoast.showToast(msg: "please valid date");
-    }
-    else  {
+    } else {
       userFirestore();
     }
   }
 
-   userFirestore() {
-     // var auth = FirebaseAuth.instance.currentUser?.uid;
-      FirebaseFirestore.instance.collection("users").add({
-        "name": _nameController.text,
-        "email": _emailController.text,
-        "address": _address.text,
-        "Date of Birth": _DateBirthdayController.text,
-        "number": number.toString(),
-      }).then((value_) {
-        FirebaseFirestore.instance.collection("users").doc(value_.id).update({"uid":value_.id});
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ButtonNavigation()),
-        );
-        Fluttertoast.showToast(msg: "Successfully added to Firestore");
-      }).catchError((error) {
-        print("Error adding/updating document to Firestore: $error");
-      });
+  userFirestore() {
+    var uid = FirebaseAuth.instance.currentUser?.uid;
+    FirebaseFirestore.instance.collection("users").doc(uid).set({
+      "id":uid,
+      "name": _nameController.text,
+      "email": _emailController.text,
+      "address": _address.text,
+      "dob": _DateBirthdayController.text,
+      "phone": number.toString(), // Use the fetched number here
+    }).then((value_) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ButtonNavigation()),);
+      Fluttertoast.showToast(msg: "Successfully added to Firestore");
+    }).catchError((error) {
+      print("Error adding/updating document to Firestore: $error");
+    });
   }
 
   @override
@@ -201,14 +195,12 @@ class _RegisterPagesState extends State<RegisterPages> {
                     onPressed: () {
                       validate();
                     },
-                    child: const Text('SignUp'),
+                    child: const Text('Save'),
                   ),
                 ),
               ],
             ),
           ),
-
-
         ],
       ),
     );

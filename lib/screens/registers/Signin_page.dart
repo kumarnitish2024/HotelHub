@@ -17,6 +17,7 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   TextEditingController phoneController = TextEditingController();
+
   storeNumber() async {
     final prefs = await SharedPreferences.getInstance();
     int numberValue = int.tryParse(phoneController.text) ?? 0;
@@ -84,7 +85,7 @@ class _SignInState extends State<SignIn> {
 
               IntlPhoneField(
                 controller: phoneController,
-                initialCountryCode: 'IN', // Set the initial country code to India
+                initialCountryCode: 'IN',
                 dropdownIconPosition: IconPosition.trailing,
                 decoration: InputDecoration(
                   labelText: "Phone Number",
@@ -104,23 +105,45 @@ class _SignInState extends State<SignIn> {
                       right: 120,
                     )
                 ),
-                onPressed: () async{
-                  try{
-                    await FirebaseAuth.instance.verifyPhoneNumber(
-                      phoneNumber: '+91${phoneController.text}',
-                        verificationCompleted: (PhoneAuthCredential credential) { },
-                        verificationFailed: (FirebaseAuthException e) {
-                          Fluttertoast.showToast(msg: "Verification Failed : - ${e.message}");
-                        },
-                        codeSent: (verificationId, forceResendingToken) {
-                          SignIn.verify=verificationId;
+                // onPressed: () async {
+                //   var phone = phoneController.text;
+                //   print(phone);
+                //   try {
+                //     await FirebaseAuth.instance.verifyPhoneNumber(
+                //       phoneNumber: phone,
+                //       verificationCompleted: (PhoneAuthCredential credential) {},
+                //       verificationFailed: (FirebaseAuthException e) {
+                //         Fluttertoast.showToast(msg: "Verification Failed: ${e.message}");
+                //       },
+                //       codeSent: (String verificationId, int? forceResendingToken) {
+                //         SignIn.verify = verificationId;
+                //         Navigator.pushReplacement(
+                //           context,
+                //           MaterialPageRoute(
+                //             builder: (context) => OtpVerification(phoneNumber: verificationId),
+                //           ),
+                //         );
+                //       },
+                //       codeAutoRetrievalTimeout: (String verificationId) {},
+                //     );
+                //   } catch (e) {
+                //     Fluttertoast.showToast(msg: "OTP Failed");
+                //   }
+                // },
+                onPressed: ()async{
+                  await FirebaseAuth.instance.verifyPhoneNumber(
+                    phoneNumber: "${}",
+                      verificationCompleted: (phoneAuthCredential) {
 
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => OtpVerification(),));
-                        },
-                        codeAutoRetrievalTimeout: (verificationId) {},
-                    );
-                  }catch(e){
-                    Fluttertoast.showToast(msg: "OTP Failed");
+                  }, verificationFailed: (error) {
+
+                  }, codeSent: (verificationId, forceResendingToken) {
+
+                  }, codeAutoRetrievalTimeout: (verificationId) {
+
+                  },);
+                  try{}catch(e){
+
                   }
                 },
                 child: const Text("Continue"),
